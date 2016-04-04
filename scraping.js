@@ -6,19 +6,30 @@ var request = require('request'),
 
 var events = [];
 
-request
-	.get('http://www.colorado.com/events')
-	.on('success', function() {
+request('http://www.colorado.com/events', function(err, res, body) {
+	if(!err && res.statusCode === 200) {
 
 		var $ = cheerio.load(body);
-	
-		$('span.date', 'div.item-list').each(function(index, element) {
+		
+		$('span.date', 'div.item-list').each(function() {
 			events.push($(this).text());
+			console.log(events);
 		});
 
-		return events;
+		fs.writeFile('events.txt', events, 'utf8', function(err) {
+			if(err) {
+				throw err;
+			}
 
-	})
-	.on('error', function(err) { console.log(err); })
-	.pipe(fs.writeFile('events.txt', events, 'utf8', function(err) { if(err) throw err; console.log('It\'s saved!'); }));
+			console.log('it\'s saved!');
+		});
+	}
+});
+	// .pipe(fs.creatWriteStream('events.txt', events, 'utf8', function(err) {
+	// 		if(err) {
+	// 			throw err;
+	// 		}
+
+	// 		console.log('it\'s saved!');
+	// }));
 
