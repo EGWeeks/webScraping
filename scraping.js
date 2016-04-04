@@ -13,7 +13,6 @@ request('http://www.colorado.com/events', function(err, res, body) {
 		
 		$('span.date', 'div.item-list').each(function() {
 			events.push($(this).text());
-			console.log(events);
 		});
 
 		fs.writeFile('events.txt', events, 'utf8', function(err) {
