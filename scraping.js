@@ -17,14 +17,14 @@ var requestEventsHandler = (function() {
 				events.push($(this).text());
 			});
 
-			return writeToFile(events);
+			return writeToFile('events.txt', events);
 		}
 	});
 })(); 
 
 
-var writeToFile = function(events) {
-	fs.writeFile('events.txt', events, 'utf8', function(err) {
+var writeToFile = function(fileName, data) {
+	fs.writeFile(fileName, data, 'utf8', function(err) {
 			if(err) {
 				throw err;
 			}
